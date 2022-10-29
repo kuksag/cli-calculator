@@ -143,12 +143,14 @@ class Parser {
         this.pos = 0
         try {
             skipSpaces()
+            val result: Int?
             if (data.startsWith(LET, pos)) {
                 val (name, value) = handleAssignment()
                 variables[name] = value
-                return null
             }
-            return calculateExpression()
+            result = calculateExpression()
+            check(pos == data.length) { "Unexpected input" }
+            return result
         } catch (e: Exception) {
             error(
                 """
